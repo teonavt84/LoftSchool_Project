@@ -5,7 +5,7 @@ base = []
 i = 1
 
 
-def name_client():
+def name_client() -> str:
     while True:
         name_client = input('Введите фамилию, или нажмите Enter для выхода: ')
         if name_client != '':
@@ -25,27 +25,29 @@ def operation_client():
             print('Введен неверный код операции.')
 
 
-def date_time():
+def date_time() -> datetime:
     date = datetime.datetime.now()
     formatted_date = date.strftime("%d-%m-%y %H:%M:%S")
     return formatted_date
 
 
-def data_client(i, name, operation, date):
+def data_client(i: int, name: str, operation: str, date: datetime) -> list:
     while True:
-        sub_data = {'Number': f"{i:03}",
-                    'Name': f"{name.title():^15s}",
-                    'Operation': f"{operation.title():^5}", 'Date': date}
+        sub_data = {'Number': i,
+                    'Name': name.title(),
+                    'Operation': operation.title(),
+                    'Date': date}
         base.append(sub_data)
         i += 1
         return base
 
 
-def printing_queue(data):
+def printing_queue(data: list):
     print('-'*51)
     for element in data:
-        element['Name'] = element['Name'][:10] + '...'
-        print(' | '.join(map(str, element.values())), '|')
+        if len(element['Name']) > 10:
+            element['Name'] = element['Name'][:10] + '...'
+        print(f"| {element['Number']:03} | {element['Name']:^13} | {element['Operation']:^5} | {element['Date']:^5} |")
     print('-'*51)
 
 
