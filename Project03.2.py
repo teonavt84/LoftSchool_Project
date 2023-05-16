@@ -1,7 +1,21 @@
 import datetime
 import random
+constants = {'num_of_zeros': 3,
+             'alignment_name': 13,
+             'alignment_operation': 5,
+             'alignment_date': 5,
+             'print_line': '-'*61,
+             'length_name': 10,
+             'print_star': '*'*20,
+             'num_in_header': 3,
+             'name_in_header': 13,
+             'code_in_header': 5,
+             'date_in_header': 17,
+             'duration_in_header': 7,
+             'random_begin': 5,
+             'random_end': 10}
 print('Электронная очередь 3.1')
-print('*' * 20)
+print(constants['print_star'])
 base = []
 base_time = []
 i = 1
@@ -46,18 +60,22 @@ def data_client(i: int, name: str, operation: str, date: datetime, time: int) ->
 
 
 def printing_queue(data: list):
-    print('-' * 61)
-    print(f"| {'№':^3} | {'Фамилия':^13} | {'Код':^5} | {'Дата':^17} | {'Длит.':^7} |")
-    print('-' * 61)
+    print(constants['print_line'])
+    print(f"| {'№':^{constants['num_in_header']}} |"
+          f" {'Фамилия':^{constants['name_in_header']}} |"
+          f" {'Код':^{constants['code_in_header']}} | "
+          f"{'Дата':^{constants['date_in_header']}} |"
+          f" {'Длит.':^{constants['duration_in_header']}} |")
+    print(constants['print_line'])
     for element in data:
-        if len(element['Name']) > 10:
-            element['Name'] = element['Name'][:10] + '...'
-        print(f"| {element['Number']:03} |"
-              f" {element['Name']:^13} |"
-              f" {element['Operation']:^5} |"
-              f" {element['Date']:^5} |"
+        if len(element['Name']) > constants['length_name']:
+            element['Name'] = element['Name'][:constants['length_name']] + '...'
+        print(f"| {element['Number']:0{constants['num_of_zeros']}} |"
+              f" {element['Name']:^{constants['alignment_name']}} |"
+              f" {element['Operation']:^{constants['alignment_operation']}} |"
+              f" {element['Date']:^{constants['alignment_date']}} |"
               f" {element['Time']} |")
-    print('-' * 61)
+    print(constants['print_line'])
 
 
 def print_queue_length(idx: int):
@@ -74,7 +92,7 @@ def print_queue_length(idx: int):
 
 
 def processing_time() -> datetime:
-    time = random.randint(5, 10)
+    time = random.randint(constants['random_begin'], constants['random_end'])
     time_string = datetime.timedelta(seconds=time)
     return time_string
 
@@ -90,21 +108,20 @@ def client_processing_time(time: datetime):
     print(f"Среднее время обслуживания клиента: {formatted_time}")
 
 
-while True:
-    print_queue_length(i)  # Печать длины очереди
-    try:
-        name = name_client()  # Ввод имени
-    except KeyboardInterrupt:
-        print('Всего Вам доброго! До свидания!')
-        break
-    if name != '':
-        operation = operation_client()  # Выбор операции
-        date = date_time()
+try:
+    while True:
+        print_queue_length(i)  # Печать длины очереди
         time = processing_time()
         client_processing_time(time)  # Печать среднего времени обслуживания клиента
-        data_cl = data_client(i, name, operation, date, time)
-        printing_queue(data_cl)
-        i += 1
-    else:
-        print('Всего Вам доброго! До свидания!')
-        break
+        name = name_client()  # Ввод имени
+        if name != '':
+            operation = operation_client()  # Выбор операции
+            date = date_time()
+            data_cl = data_client(i, name, operation, date, time)
+            printing_queue(data_cl)
+            i += 1
+        else:
+            print('Всего Вам доброго! До свидания!')
+            break
+except KeyboardInterrupt:
+    print('Всего Вам доброго! До свидания!')

@@ -1,6 +1,13 @@
 import datetime
+constants = {'num_of_zeros': 3,
+             'alignment_name': 13,
+             'alignment_operation': 5,
+             'alignment_date': 5,
+             'print_line': '-'*51,
+             'length_name': 10,
+             'print_star': '*'*20}
 print('Электронная очередь 3.1')
-print('*'*20)
+print(constants['print_star'])
 base = []
 i = 1
 
@@ -43,12 +50,15 @@ def data_client(i: int, name: str, operation: str, date: datetime) -> list:
 
 
 def printing_queue(data: list):
-    print('-'*51)
+    print(constants['print_line'])
     for element in data:
-        if len(element['Name']) > 10:
-            element['Name'] = element['Name'][:10] + '...'
-        print(f"| {element['Number']:03} | {element['Name']:^13} | {element['Operation']:^5} | {element['Date']:^5} |")
-    print('-'*51)
+        if len(element['Name']) > constants['length_name']:
+            element['Name'] = element['Name'][:constants['length_name']] + '...'
+        print(f"| {element['Number']:0{constants['num_of_zeros']}} | "
+              f"{element['Name']:^{constants['alignment_name']}} | "
+              f"{element['Operation']:^{constants['alignment_operation']}} | "
+              f"{element['Date']:^{constants['alignment_date']}} |")
+    print(constants['print_line'])
 
 
 while True:
